@@ -38,6 +38,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -85,15 +86,25 @@ fun DiceRollerApp() {
 
 @Composable
 fun DiceWithButtonAndImage(
-    modifier: Modifier = Modifier,
-    viewModel: DiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    modifier: Modifier = Modifier
 ) {
+    // 取得 Context
+    val context = androidx.compose.ui.platform.LocalContext.current
+
+    // 初始化資料庫與 Repository
+    val database = DiceDatabase.getDatabase(context)
+    val repository = DiceRepository(database.diceRollDao())
+
+    // 使用 Factory 建立 ViewModel
+    val viewModel: DiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = DiceViewModelFactory(repository)
+    )
     var result = viewModel.result
     var rollCount = viewModel.rollCount
 
     // 建立一個狀態來追蹤是否展開
     var isExpanded by remember { mutableStateOf(false) }
-    var rollHistory = viewModel.rollHistory
+    val rollHistory by viewModel.rollHistory.collectAsState()
 
     val imageResource = when(result) {
         1 -> R.drawable.dice_1
@@ -164,22 +175,23 @@ fun DiceWithButtonAndImage(
                 .animateContentSize()
                 .height(if (isExpanded) 200.dp else 0.dp)
             ) {
-                items(rollHistory) { score -> // 這裡的 score 就是 Lambda 的參數
+                // 確保傳入的是 rollHistory 清單
+                items(items = rollHistory) { diceRoll ->
                     Surface(
                         shape = MaterialTheme.shapes.medium,
                         shadowElevation = 1.dp,
                         modifier = Modifier.animateContentSize().padding(1.dp),
                         color = animateColorAsState(
-                            if (isExpanded) MaterialTheme.colorScheme.primaryContainer
+                            targetValue = if (isExpanded) MaterialTheme.colorScheme.primaryContainer
                             else MaterialTheme.colorScheme.surface
                         ).value
                     ) {
+                        //
                         Text(
-                            text = "第 ${rollHistory.size - rollHistory.indexOf(score)} 次擲出：$score 點",
+                            text = "第 ${rollHistory.size - rollHistory.indexOf(diceRoll)} 次擲出：${diceRoll.result} 點",
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
-
                 }
             }
         }
