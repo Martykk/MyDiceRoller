@@ -40,6 +40,12 @@ class DiceViewModel (private val repository: DiceRepository): ViewModel() {
             repository.insert(DiceRoll(result = nextResult))
         }
     }
+
+    fun deleteRoll(diceRoll: DiceRoll){
+        viewModelScope.launch {
+            repository.delete(diceRoll)
+        }
+    }
 }
 
 class DiceViewModelFactory(private val repository: DiceRepository) : ViewModelProvider.Factory {

@@ -16,7 +16,7 @@ abstract class DiceDatabase : RoomDatabase() {
         @Volatile
         private var Instance: DiceDatabase? = null
 
-        // 3. 這是 MainActivity 會呼叫的方法
+        // 這是 MainActivity 會呼叫的方法
         fun getDatabase(context: Context): DiceDatabase {
             // 如果 Instance 不是空的就回傳；如果是空的就進入同步鎖定區建立它
             return Instance ?: synchronized(this) {

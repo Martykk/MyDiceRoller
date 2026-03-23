@@ -180,7 +180,10 @@ fun DiceWithButtonAndImage(
                     Surface(
                         shape = MaterialTheme.shapes.medium,
                         shadowElevation = 1.dp,
-                        modifier = Modifier.animateContentSize().padding(1.dp),
+                        modifier = Modifier
+                            .animateContentSize().padding(1.dp)
+                            .padding(1.dp)
+                            .clickable{(viewModel.deleteRoll(diceRoll))},
                         color = animateColorAsState(
                             targetValue = if (isExpanded) MaterialTheme.colorScheme.primaryContainer
                             else MaterialTheme.colorScheme.surface

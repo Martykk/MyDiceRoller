@@ -1,6 +1,7 @@
 package com.example.diceroller
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,4 +20,7 @@ interface DiceRollDao {
     // 3. 清空所有紀錄（如果你想做一個「清除歷史」的功能）
     @Query("DELETE FROM dice_history")
     suspend fun clearAll()
+
+    @Delete
+    suspend fun delete(diceRoll: DiceRoll)
 }

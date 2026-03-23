@@ -10,4 +10,8 @@ class DiceRepository(private val diceRollDao: DiceRollDao) {
     suspend fun insert(diceRoll: DiceRoll) {
         diceRollDao.insert(diceRoll)
     }
+
+    suspend fun delete(diceRoll: DiceRoll){
+        diceRollDao.delete(diceRoll)
+    }
 }
