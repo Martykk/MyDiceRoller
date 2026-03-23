@@ -1,7 +1,5 @@
-Create an interactive dice roller app - Solution Code
+Create an interactive dice roller app
 =======================================
-
-Solution code for the Android Basics with Compose: Create an interactive dice roller app.
 
 Introduction
 ------------
@@ -18,4 +16,10 @@ You need to know:
 Getting Started
 ---------------
 
-1. Download and run the app.
+Download and run the app.
+
+Development Roadmap
+-------------------
+- Day 1: 添加和美化UI，建立LazyColumn儲存和顯示歷史紀錄
+- Day 2: 添加和美化UI，建立LazyColumn儲存和顯示歷史紀錄
+- Day 1: 添加和美化UI，建立LazyColumn儲存和顯示歷史紀錄

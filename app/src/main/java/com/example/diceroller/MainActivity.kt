@@ -84,13 +84,16 @@ fun DiceRollerApp() {
 }
 
 @Composable
-fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
-    var result by remember { mutableStateOf( 1) }
-    var rollCount by remember { mutableStateOf(0) }
+fun DiceWithButtonAndImage(
+    modifier: Modifier = Modifier,
+    viewModel: DiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
+    var result = viewModel.result
+    var rollCount = viewModel.rollCount
 
     // 建立一個狀態來追蹤是否展開
     var isExpanded by remember { mutableStateOf(false) }
-    var rollHistory = remember { mutableStateListOf<Int>() }
+    var rollHistory = viewModel.rollHistory
 
     val imageResource = when(result) {
         1 -> R.drawable.dice_1
@@ -136,9 +139,7 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-                result = (1..6).random()
-                rollHistory.add(0,result)
-                rollCount++
+                viewModel.rollDice()
                       },
         ) {
             Text(text = stringResource(R.string.roll), fontSize = 24.sp)
